@@ -15,7 +15,7 @@ class PlayerFrozenEvents(val plugin: Gamemode4Core): Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
 
-        if (Gamemode4Core.playersFrozen && !event.player.hasPermission("gm4core.freeze.byspass")) {
+        if ((Gamemode4Core.allPlayersFrozen || event.player in Gamemode4Core.frozenPlayers) && !event.player.hasPermission("gm4core.freeze.byspass")) {
             val from: Location = event.from
             val to: Location = event.to
 
@@ -30,7 +30,7 @@ class PlayerFrozenEvents(val plugin: Gamemode4Core): Listener {
 
     @EventHandler
     fun onPlayerDamage(event: EntityDamageEvent) {
-        if (event.entity is Player && Gamemode4Core.playersFrozen) {
+        if (event.entity is Player && (Gamemode4Core.allPlayersFrozen || event.entity in Gamemode4Core.frozenPlayers)) {
             event.isCancelled = true
         }
 

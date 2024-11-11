@@ -26,12 +26,14 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 import java.util.function.Function
+import kotlin.collections.HashMap
 
 
 class Gamemode4Core : JavaPlugin() {
 
     companion object {
-        var playersFrozen: Boolean = false
+        var allPlayersFrozen: Boolean = false
+        val frozenPlayers: HashMap<Player, UUID> = HashMap()
         val watchingPlayers: HashMap<Player,UUID> = HashMap()
         val backLocations: HashMap<UUID,MutableList<Location>> = HashMap()
 

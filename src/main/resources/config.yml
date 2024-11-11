@@ -2,7 +2,7 @@
 # Gamemode 4 Core
 # by kruthers
 # ######### #
-# query kruthers#7770 on discord for any config help
+# query kruthers on discord for any config help
 config_version: -1
 mod_mode:
   group: builder
@@ -21,8 +21,8 @@ scoreboard:
   tracked: []
 server_config:
   motd: |
-    <aqua><bold>Gamemode 4</bold></aqua> <gray>- <gold><bold>Public Server</bold> <red>[1.16.5]
-    <dark_green>     Now Open to the public! <dark_aqua>Come Play!
+    <aqua><bold>Gamemode 4</bold></aqua> <gray>- <gold><bold>Public Server</bold> <red>[1.20.4]
+    <dark_green>     Now open to the public! <dark_aqua>Come play!
   max_players: 20
 dim_sleep_bug:
   fix: true
@@ -41,7 +41,7 @@ messages:
   staff_prefix: '<yellow>[STAFF]</yellow>'
   info: |
     <aqua>Welcome to Gamemode 4!</aqua>
-    <grey>Gamemode 4 is a collection of datapacks that change and modify the gameplay experience
+    <grey>Gamemode 4 is a collection of data packs that change and modify the gameplay experience
     You can find out more on our website <color:#f563ff><u><hover:show_text:'<grey>https://gm4.co</grey>'><click:open_url:'https://gm4.co'>here</click></hover></u></color> & on our wiki: <color:#f563ff><u><hover:show_text:'<grey>https://wiki.gm4.co/wiki/Public_Server</grey>'><click:open_url:'https://wiki.gm4.co/wiki/Public_Server'>here</click></hover></u></color></grey>
   freeze:
     start_brodcast: |
@@ -54,9 +54,13 @@ messages:
       <dark_aqua>veryone has been release, you are free to move arround again</dark_aqua>
       <aqua>Please be carefull and report any issues</aqua>
       <dark_gray>------- ------ -------</dark_gray>
-    staff_start: '<staff_prefix> <aqua><name></aqua> <gold>Has frozen everyone in place, run /unfreeze to release them'
-    staff_end: '<staff_prefix> <aqua><name></aqua> <gold>Has unfrozen everyone'
-    fozen: '<prefix> <red>Sorry you cant move while all players are frozen. Please stand still while the mods work to resolve the issue'
+    start_player: '<prefix> <red>You have been frozen'
+    end_player: '<prefix> <red>You have been unfrozen'
+    staff_start: '<staff_prefix> <aqua><name></aqua> <gold>has frozen everyone in place, run /unfreeze to release them'
+    staff_end: '<staff_prefix> <aqua><name></aqua> <gold>has unfrozen everyone'
+    staff_end_partial: '<gold>Reminder, there are still individual players frozen:'
+    staff_end_repeat: '<gold>You can re-run /unfreeze to unfreeze the remaining players'
+    fozen: '<prefix> <red>Sorry you cannot move while all players are frozen. Please stand still while the mods work to resolve the issue'
   mod_mode:
     enter: '<prefix> <green>Successfully entered into moderation mode'
     exit: '<prefix> <green>Exiting moderation mode...'
@@ -64,10 +68,10 @@ messages:
   watch:
     start: '<prefix> <green>You are now watching <dark_aqua><target>'
     stop: '<prefix> <green>You are no longer watching anyone'
-    dimension_change: '<prefix> <dark_aqua><target></dark_aqua> <dark_purple>Has changed dimension do <light_purple>/watchconfirm</light_purple> to follow them'
+    dimension_change: '<prefix> <dark_aqua><target></dark_aqua> <dark_purple>has changed dimension.  Do <light_purple>/watchconfirm</light_purple> to follow them'
     join: '<prefix> <red>You are currently set to be watching <dark_aqua><target>'
-    logout: '<prefix> <grey>Your target has left the game, you will be able to tp when they log back in'
-    not_online: '<prefix> <red>Your target is currently not online so can not be teleported too'
+    logout: '<prefix> <grey>Your target has left the game, you will be able to tp to them when they log back in'
+    not_online: '<prefix> <red>Your target is currently not online so the teleport was canceled'
     not_watching: '<prefix> <red>You must be watching someone to execute this command'
   streammode:
     enter: '<prefix> <red>You are now in streamer mode and will not receive staff notifications, run <dark_red>/streammode</dark_red> to exit'

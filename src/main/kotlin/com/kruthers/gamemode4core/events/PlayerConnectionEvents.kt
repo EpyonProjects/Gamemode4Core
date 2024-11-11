@@ -196,7 +196,7 @@ class PlayerConnectionEvents(val plugin: Gamemode4Core): Listener {
         }
 
         // If the server is in freeze mode it will send a message informing them
-        if (Gamemode4Core.playersFrozen) {
+        if (Gamemode4Core.allPlayersFrozen) {
             event.player.sendMessage(Component.text("Everyone is currently frozen while the mods resolve an issue, please stand still",NamedTextColor.AQUA))
             event.player.sendTitlePart(
                 TitlePart.TIMES,
