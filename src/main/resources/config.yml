@@ -57,9 +57,8 @@ messages:
     start_player: '<prefix> <red>You have been frozen'
     end_player: '<prefix> <red>You have been unfrozen'
     staff_start: '<staff_prefix> <aqua><name></aqua> <gold>has frozen everyone in place, run /unfreeze to release them'
+    staff_start_individual: '<staff_prefix> <white><target></white> <gold>has been individually frozen by <aqua><name></aqua>'
     staff_end: '<staff_prefix> <aqua><name></aqua> <gold>has unfrozen everyone'
-    staff_end_partial: '<gold>Reminder, there are still individual players frozen:'
-    staff_end_repeat: '<gold>You can re-run /unfreeze to unfreeze the remaining players'
     fozen: '<prefix> <red>Sorry you cannot move while all players are frozen. Please stand still while the mods work to resolve the issue'
   mod_mode:
     enter: '<prefix> <green>Successfully entered into moderation mode'

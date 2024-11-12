@@ -22,10 +22,9 @@ class PlayerFrozenEvents(val plugin: Gamemode4Core): Listener {
             if (from.x != to.x || from.z != to.z) {
                 to.x = from.x
                 to.z = from.z
-                event.player.sendMessage(getMessage(plugin, "freeze.fozen"))
+                event.player.sendMessage(getMessage( "freeze.fozen"))
             }
         }
-
     }
 
     @EventHandler

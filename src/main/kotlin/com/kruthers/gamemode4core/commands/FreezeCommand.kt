@@ -6,10 +6,8 @@ import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
 import com.kruthers.gamemode4core.Gamemode4Core
 import com.kruthers.gamemode4core.utils.getMessage
-import com.kruthers.gamemode4core.utils.parseString
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Bukkit
@@ -27,22 +25,50 @@ class FreezeCommand(val plugin: Gamemode4Core) {
             return
         }
         Gamemode4Core.allPlayersFrozen = true
-        Bukkit.broadcast(getMessage(plugin,"freeze.start_brodcast"))
-        Bukkit.broadcast(getMessage(plugin,"freeze.staff_start", TagResolver.resolver(
-            Placeholder.unparsed("name",sender.name))),"gm4core.freeze.notify")
+        Bukkit.broadcast(getMessage("freeze.start_brodcast"))
+        Bukkit.broadcast(getMessage("freeze.staff_start",
+                        TagResolver.resolver(Placeholder.unparsed("name",sender.name))),
+                                    "gm4core.freeze.notify")
     }
 
     @CommandMethod("freeze <player>")
     @CommandPermission("gm4core.freeze.player")
     @CommandDescription("Freeze a specific player on the server")
     fun onFreezeCommand(sender: CommandSender, @Argument("player") target: Player) {
+        if (target.hasPermission("gm4core.freeze.byspass")) {
+            sender.sendMessage(Component.text(target.name, NamedTextColor.GRAY)
+                .append(Component.text(" cannot be frozen.", NamedTextColor.RED)))
+            return
+        }
+
         if (target in Gamemode4Core.frozenPlayers) {
-            sender.sendMessage(Component.text("That player is already frozen.  To allow them to move, use /unfreeze <name>",NamedTextColor.RED))
+            sender.sendMessage(Component.text(target.name, NamedTextColor.GRAY)
+                .append(Component.text(" is already frozen.  To unfreeze, use /unfreeze <name>", NamedTextColor.RED)))
             return
         }
 
         Gamemode4Core.frozenPlayers[target] = target.uniqueId
-        target.sendMessage(getMessage(plugin, "freeze.start_player"))
+        target.sendMessage(getMessage("freeze.start_player"))
+        Bukkit.broadcast(getMessage("freeze.staff_start_individual",
+     TagResolver.resolver(Placeholder.unparsed("target", target.name),
+                          Placeholder.unparsed("name",sender.name))),
+                                    "gm4core.freeze.notify")
+    }
+
+    @CommandMethod("freezelist")
+    @CommandPermission("gm4core.freeze.player")
+    @CommandDescription("List frozen players")
+    fun onFreezeQueryCommand(sender: CommandSender) {
+        if (Gamemode4Core.allPlayersFrozen) {
+            sender.sendMessage(Component.text("Everyone is currently frozen", NamedTextColor.GOLD))
+        }
+        if (Gamemode4Core.frozenPlayers.isNotEmpty()) {
+            sender.sendMessage(Component.text("Individually frozen players: ", NamedTextColor.GOLD)
+                .append(Component.text(Gamemode4Core.frozenPlayers.keys.toList().joinToString { it -> it.name }, NamedTextColor.WHITE)))
+        }
+        if (!Gamemode4Core.allPlayersFrozen && Gamemode4Core.frozenPlayers.isEmpty()) {
+            sender.sendMessage(Component.text("No one is frozen", NamedTextColor.RED))
+        }
     }
 
     @CommandMethod("unfreeze")
@@ -51,21 +77,24 @@ class FreezeCommand(val plugin: Gamemode4Core) {
     fun onUnfreezeCommand(sender: CommandSender) {
         // No one is frozen
         if (!Gamemode4Core.allPlayersFrozen && Gamemode4Core.frozenPlayers.isEmpty()) {
-            sender.sendMessage(Component.text("Freeze is not active, do /freeze to change this",NamedTextColor.RED))
+            sender.sendMessage(Component.text("Freeze is not active, do /freeze to change this", NamedTextColor.RED))
             return
         }
         // All frozen
         if (Gamemode4Core.allPlayersFrozen) {
             Gamemode4Core.allPlayersFrozen = false
-            Bukkit.broadcast(getMessage(plugin,"freeze.end_brodcast"))
-            Bukkit.broadcast(getMessage(plugin,"freeze.staff_end", TagResolver.resolver(
-                Placeholder.unparsed("name",sender.name))),"gm4core.freeze.notify")
+            Bukkit.broadcast(getMessage("freeze.end_brodcast"))
+            Bukkit.broadcast(getMessage("freeze.staff_end",
+        TagResolver.resolver(Placeholder.unparsed("name",sender.name))),
+                                        "gm4core.freeze.notify")
             // Almost all unfrozen
             if (Gamemode4Core.frozenPlayers.isNotEmpty())
-                sender.sendMessage(getMessage(plugin, "freeze.staff_end_partial"))
-
-                sender.sendMessage(Component.text(Gamemode4Core.frozenPlayers.keys.toList().joinToString { it -> it.name }))
+                Bukkit.broadcast(Component.text("Reminder, there are still individually players frozen:", NamedTextColor.RED), "gm4core.freeze.notify")
+                Bukkit.broadcast(Component.text(Gamemode4Core.frozenPlayers.keys.toList().joinToString { it -> it.name },
+                                                    NamedTextColor.WHITE), "gm4ore.freeze.notify")
+                Bukkit.broadcast(Component.text("You can re-run /unfreeze to unfreeze all individually frozen players", NamedTextColor.RED), "gm4core.freeze.notify")
             return
+
         }
         // Individually frozen
         Gamemode4Core.frozenPlayers.clear()
@@ -82,7 +111,10 @@ class FreezeCommand(val plugin: Gamemode4Core) {
         }
 
         Gamemode4Core.frozenPlayers.remove(target)
-        target.sendMessage(getMessage(plugin, "freeze.end_player"))
+        target.sendMessage(getMessage( "freeze.end_player"))
+        if (Gamemode4Core.frozenPlayers.isEmpty()) {
+            sender.sendMessage(Component.text("All remaining frozen players have been unfrozen",NamedTextColor.RED))
+        }
     }
 
 }
